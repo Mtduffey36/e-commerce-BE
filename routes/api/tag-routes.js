@@ -32,7 +32,13 @@ router.get('/:id', async(req, res) => {
 });
 
 // New tag
-router.post('/', (req, res) => {
+router.post('/', async(req, res) => {
+  try {
+    const newTag = await Tag.create(req.body);
+    res.status(200).json(newTag)
+  }catch{
+    res.status(500).json(err);
+  }
 });
 
 // Update tag name and ID
