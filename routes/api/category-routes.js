@@ -23,6 +23,7 @@ router.get('/:id', async(req, res) => {
       res.status(404).json({message: 'No category with this id is found'});
       return;
     }
+    res.status(200).json(catData);
   } catch(err) {
     res.status(500).json(err)
   }
@@ -44,6 +45,12 @@ router.put('/:id', async(req, res) => {
         id: body.params.id
       }
     });
+    if(updatedRows === 0) {
+      res.status(404).json({message: 'no cat found with this id'});
+      return;
+    }
+    const updateCat = await Category.findByPk(req.params.id);
+    res.status(200).json(updateCat);
   } catch(err) {
     res.status(500).json(err);
   }
@@ -57,8 +64,10 @@ router.delete('/:id', async(req, res) => {
       }
     });
     if (deleteRow === 0) {
-      res.status(404).json({message: 'No category with this id is found'})
+      res.status(404).json({message: 'No category with this id is found'});
+      return;
     }
+    res.status(200).json({message: 'cat deleted'})
   } catch(err){
     res.status(500).json(err);
   }
